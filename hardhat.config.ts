@@ -7,7 +7,7 @@ import { exchangeToken, generateAccessTokenMessage } from './src/access-token'
 import { ethers } from 'ethers'
 dotenv.config()
 
-const CHESTS_PER_TX = 100
+const POUCHES_PER_TX = 100
 
 task('shop', 'Buy pouches')
   .addParam('amount', 'Amount of purchases')
@@ -33,16 +33,16 @@ task('shop', 'Buy pouches')
     const accessTokenSignature = await signer.signMessage(accessTokenMessage)
     const { accessToken } = await exchangeToken(accessTokenSignature, accessTokenMessage)
 
-    console.log(`Buying ${amount}x ${CHESTS_PER_TX}${premium ? ' Premium' : ''} Pouches (total ${amount * CHESTS_PER_TX * (premium ? 50 : 10)} slips)`)
+    console.log(`Buying ${amount}x ${POUCHES_PER_TX}${premium ? ' Premium' : ''} Pouches (total ${amount * POUCHES_PER_TX * (premium ? 50 : 10)} slips)`)
 
     for (let i = 1; i <= amount; i++) {
-      results = await fetchBuyGacha(CHESTS_PER_TX, premium, accessToken)
+      results = await fetchBuyGacha(POUCHES_PER_TX, premium, accessToken)
 
       try {
-        const chestsToRoll = Array(CHESTS_PER_TX).fill([premium ? '1' : '0', premium ? '50' : '10'])
+        const chestsToRoll = Array(POUCHES_PER_TX).fill([premium ? '1' : '0', premium ? '50' : '10'])
         const txRoll = await shopContract.roll(chestsToRoll, results[0].nonce, results[0].deadline, results[0].slipAmount, results[0].signature,
           {
-            value: ethers.utils.parseEther((0.0112 * CHESTS_PER_TX).toString()),
+            value: ethers.utils.parseEther((0.0112 * POUCHES_PER_TX).toString()),
             gasLimit: 6000000
           })
         console.log(`#${i}\tPurchased ${results[0].chests.length}${premium ? ' Premium' : ''} Pouches:`, txRoll.hash)
