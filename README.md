@@ -41,7 +41,7 @@ npx hardhat shop --amount 3
 
 - Buy 500 Premium Lucky Pouches
 ```bash
-npx hardhat shop --premium --amount 3
+npx hardhat shop --premium --amount 5
 ```
 
 Thanks [@alexx855](https://github.com/alexx855) for the `access-token.ts`!
