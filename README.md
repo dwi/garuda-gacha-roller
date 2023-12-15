@@ -41,3 +41,5 @@ npx hardhat shop --amount 3
 ```bash
 npx hardhat shop --premium --amount 3
 ```
+
+Thanks [@alexx855](https://github.com/alexx855) for the `access-token.ts`!
