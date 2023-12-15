@@ -2,6 +2,8 @@
 
 Automate bulk purchases of Lucky Pouches from Garuda Shrine Shop.
 
+![image](https://github.com/dwi/garuda-gacha-roller/assets/1337260/208bcf24-e116-4f6f-ad74-ac6efdb4b6d1)
+
 > **Warning**
 > **Run it locally and preferably on an encrypted volume, your private keys can be exposed!**
 
