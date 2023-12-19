@@ -40,12 +40,12 @@ task('shop', 'Buy pouches')
 
       try {
         const chestsToRoll = Array(POUCHES_PER_TX).fill([premium ? '1' : '0', premium ? '50' : '10'])
-        const txRoll = await shopContract.roll(chestsToRoll, results[0].nonce, results[0].deadline, results[0].slipAmount, results[0].signature,
+        const txRoll = await shopContract.roll(chestsToRoll, results.nonce, results.deadline, results.slipAmount, results.signature,
           {
             value: ethers.utils.parseEther((0.0112 * POUCHES_PER_TX).toString()),
             gasLimit: 6000000
           })
-        console.log(`#${i}\tPurchased ${results[0].chests.length}${premium ? ' Premium' : ''} Pouches:`, txRoll.hash)
+        console.log(`#${i}\tPurchased ${results.chests.length}${premium ? ' Premium' : ''} Pouches:`, txRoll.hash)
       } catch (e: Error | any) {
         console.log('⭕ Failed to buy')
         e.code && e.info && console.error(`⚠️ ${e.code} (${e.info.error.message})`)

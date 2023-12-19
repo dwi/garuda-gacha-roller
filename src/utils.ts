@@ -36,7 +36,7 @@ export async function apiRequest<T>(
     },
     ...(method === 'GET' ? {} : { body })
   })
-
-  const res: T = await response.json()
-  return res
+  const string = await response.text();
+  const json: T = string === "" ? {} : JSON.parse(string);
+  return json
 }
