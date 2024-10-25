@@ -3,7 +3,6 @@ import '@nomiclabs/hardhat-ethers'
 import * as fs from 'fs/promises'
 import * as dotenv from 'dotenv'
 import { fetchBuyGacha } from './src/gacha'
-import { exchangeToken, generateAccessTokenMessage } from './src/access-token'
 import { ethers } from 'ethers'
 dotenv.config()
 
@@ -29,10 +28,7 @@ task('shop', 'Buy pouches')
     )
 
     let results = []
-    const accessTokenMessage = await generateAccessTokenMessage(address)
-    const accessTokenSignature = await signer.signMessage(accessTokenMessage)
-    const { accessToken } = await exchangeToken(accessTokenSignature, accessTokenMessage)
-
+    const accessToken = 'accessToken from app.axie'
     console.log(`Buying ${amount}x ${POUCHES_PER_TX}${premium ? ' Premium' : ''} Pouches (total ${amount * POUCHES_PER_TX * (premium ? 50 : 10)} slips)`)
 
     for (let i = 1; i <= amount; i++) {
@@ -40,15 +36,16 @@ task('shop', 'Buy pouches')
 
       try {
         const chestsToRoll = Array(POUCHES_PER_TX).fill([premium ? '1' : '0', premium ? '50' : '10'])
-        const txRoll = await shopContract.roll(chestsToRoll, results.nonce, results.deadline, results.slipAmount, results.signature,
+        const txRoll = await shopContract.roll(chestsToRoll, address, address, results.nonce, results.deadline, results.slipAmount, results.signature,
           {
             value: ethers.utils.parseEther((0.0112 * POUCHES_PER_TX).toString()),
             gasLimit: 6000000
           })
         console.log(`#${i}\tPurchased ${results.chests.length}${premium ? ' Premium' : ''} Pouches:`, txRoll.hash)
       } catch (e: Error | any) {
-        console.log('⭕ Failed to buy')
-        e.code && e.info && console.error(`⚠️ ${e.code} (${e.info.error.message})`)
+        console.error('⭕ Failed to buy:')
+        results.errors && results.errors[0].message && console.error(`⭕ ${results.errors[0].message}`)
+        e.code && e.info && console.error(`⭕ ${e.code} (${e.info.error.message})`)
       }
 
       if (i < amount) {

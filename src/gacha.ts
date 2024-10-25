@@ -1,13 +1,15 @@
 import { fetchApi } from './utils'
 
-const buyGachaTicketsMsg = `mutation BuyGachaTicketMessage($chests: [GachaChestTpe!]!) {
-  buyGachaTicketMessage(chests: $chests) {
+const buyGachaTicketsMsg = `mutation BuyGachaTicketMessage($chests: [GachaChestTpe!]!, $delegatorAddress: String) {
+  buyGachaTicketMessage(chests: $chests, delegatorAddress: $delegatorAddress) {
     chests {
       amount
       category
     }
+    recipient
     nonce
     slipAmount
+    slipOwner
     deadline
     signature
   }
@@ -27,6 +29,6 @@ export async function fetchBuyGacha(amount: number, premium: boolean, token: str
   if ((gachaData as any)?.data?.buyGachaTicketMessage) {
     return (gachaData as any).data.buyGachaTicketMessage
   } else {
-    console.log(`Failed to buy gacha tickets`, gachaData)
+    return gachaData
   }
 }
