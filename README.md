@@ -52,6 +52,7 @@ cp .env.example .env
 
 - 🔐 Your private key
 - 🎫 Access Token from app.axie (obtained from steps above)
+- 🔗 Ronin RPC from https://developer.skymavis.com (optional, will use default if not provided)
 
 ## ✨ Features
 

@@ -24,8 +24,8 @@ if (!process.env.PRIVATE_KEY || !process.env.ACCESS_TOKEN) throw new Error('Miss
 
 // Blockchain setup
 const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
-const publicClient = createPublicClient({ chain: ronin, transport: http() })
-const walletClient = createWalletClient({ account, chain: ronin, transport: http() })
+const publicClient = createPublicClient({ chain: ronin, transport: http(process.env.RONIN_RPC ?? undefined) })
+const walletClient = createWalletClient({ account, chain: ronin, transport: http(process.env.RONIN_RPC ?? undefined) })
 
 const program = new Command()
 
