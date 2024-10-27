@@ -126,6 +126,8 @@ async function estimateGachaFee(): Promise<bigint> {
 
 async function processGachaResults(reqHash: `0x${string}`, batchNumber: number): Promise<void> {
   return new Promise((resolve) => {
+    let isResolved = false
+    
     const unwatch = publicClient.watchContractEvent({
       address: CONSTANTS.VRF_ADDRESS,
       abi: vrfAbi,
@@ -192,6 +194,7 @@ async function processGachaResults(reqHash: `0x${string}`, batchNumber: number):
             console.log('❌ No matching GachaRollFulfilled event found in transaction')
           }
 
+          isResolved = true
           unwatch()
           resolve()
           return
@@ -200,9 +203,11 @@ async function processGachaResults(reqHash: `0x${string}`, batchNumber: number):
     })
 
     setTimeout(() => {
-      unwatch()
-      console.log('❌ Timeout waiting for VRF result')
-      resolve()
+      if (!isResolved) {
+        console.log('❌ Timeout waiting for VRF result')
+        unwatch()
+        resolve()
+      }
     }, CONSTANTS.VRF_TIMEOUT)
   })
 }
