@@ -16,7 +16,7 @@
 
 - 📦 Node.js 18+
 - 🔧 One of the following package managers (in order of preference):
-  - 🚀 bun
+  - 🚀 bun (will use bun in the example)
   - ⚡ pnpm
   - 🧶 yarn
   - 📦 npm
@@ -82,6 +82,8 @@ The tool tracks and displays:
 ## 📖 Usage Examples
 
 ### 🔰 Basic Usage
+
+Will use bun as the package manager. You can replace it with pnpm, yarn or npm.
 
 ```bash
 # Roll 100 regular pouches (default)
