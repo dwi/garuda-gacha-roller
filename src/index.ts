@@ -32,7 +32,8 @@ const program = new Command()
 program
   .name('garuda-gacha-roller')
   .description('CLI tool for rolling Garuda Gacha Lucky Pouches')
-  .argument('[amount]', 'number of batches to roll', '1')
+  .argument('[amount]', 'number of batches to roll')
+  .option('--amount <number>', 'number of batches to roll')
   .option('--premium', 'use premium pouches')
   .option('--verbose', 'show detailed output')
   .option('--delegator <address>', 'address to roll for')
@@ -40,11 +41,24 @@ program
 program.parse()
 
 const options = program.opts()
+
+// Validate amount specification
+if (options.amount && program.args[0]) {
+  console.error('❌ Please specify amount either as an argument or with --amount option, not both')
+  process.exit(0)
+}
+
 const settings = {
-  amount: Number(program.args[0]) || 1,
+  amount: Number(options.amount || program.args[0] || 1),
   premium: options.premium || false,
   verbose: options.verbose || false,
   delegator: options.delegator || '',
+}
+
+// Add validation for amount
+if (settings.amount <= 0 || !Number.isInteger(settings.amount)) {
+  console.error('❌ Amount must be a positive integer')
+  process.exit(0)
 }
 
 // Add validation for delegator address

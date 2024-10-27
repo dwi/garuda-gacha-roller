@@ -57,7 +57,7 @@ cp .env.example .env
 
 ### 🎮 Command Line Options
 
-- `--amount X` - Number of max bulk purchases (1 means 100 pouches) to execute (default: 1)
+- `--amount X` or just `X` - Number of max bulk purchases (1 means 100 pouches) to execute (default: 1)
 - `--premium` - Buy premium Lucky Pouches instead of regular ones
 - `--verbose` - Show detailed output including transaction hashes and reward breakdowns
 - `--delegator <address>` - Roll pouches for another address (delegator has to delegate to this address first)
