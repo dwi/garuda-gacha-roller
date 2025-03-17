@@ -27,6 +27,10 @@
   4. Under Storage, expand Local Storage
   5. Click on https://app.axieinfinity.com
   6. Find and copy the value of "accessToken"
+- 🔐 SkyMavis API Key:
+  1. Go to https://developers.skymavis.com
+  2. Create an account or log in
+  3. Create a dApp and get your API key
 
 ## 🛠️ Installation
 
@@ -48,11 +52,15 @@ npm install
 cp .env.example .env
 ```
 
-3. Edit .env file and add:
+3. Edit .env file and add required values:
 
 - 🔐 Your private key
 - 🎫 Access Token from app.axie (obtained from steps above)
-- 🔗 Ronin RPC from https://developer.skymavis.com (optional, will use default if not provided)
+- 🔑 SkyMavis API Key (obtained from developers.skymavis.com)
+
+Optional:
+- 🔗 Custom Ronin RPC URL (e.g., from Alchemy or other providers)
+  - If not provided, will use SkyMavis RPC with your API key
 
 ## ✨ Features
 

@@ -20,12 +20,12 @@ const shopAbi = JSON.parse(readFileSync(new URL('../abis/garudashop.json', impor
 const vrfAbi = JSON.parse(readFileSync(new URL('../abis/vrf.json', import.meta.url), 'utf8'))
 
 // Environment validation
-if (!process.env.PRIVATE_KEY || !process.env.ACCESS_TOKEN) throw new Error('Missing required environment variables')
+if (!process.env.PRIVATE_KEY || !process.env.ACCESS_TOKEN || !process.env.SKIMAVIS_DAPP_KEY) throw new Error('Missing required environment variables')
 
 // Blockchain setup
 const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
-const publicClient = createPublicClient({ chain: ronin, transport: http(process.env.RONIN_RPC ?? undefined) })
-const walletClient = createWalletClient({ account, chain: ronin, transport: http(process.env.RONIN_RPC ?? undefined) })
+const publicClient = createPublicClient({ chain: ronin, transport: http(process.env.RONIN_RPC ?? `https://api-gateway.skymavis.com/rpc?apikey=${process.env.SKIMAVIS_DAPP_KEY}`) })
+const walletClient = createWalletClient({ account, chain: ronin, transport: http(process.env.RONIN_RPC ?? `https://api-gateway.skymavis.com/rpc?apikey=${process.env.SKIMAVIS_DAPP_KEY}`) })
 
 const program = new Command()
 
@@ -89,11 +89,12 @@ async function fetchGachaTickets(): Promise<GachaTicket> {
     }
   `
 
-  const response = await fetch('https://graphql-gateway.axieinfinity.com/graphql', {
+  const response = await fetch('https://api-gateway.skymavis.com/graphql/axie-marketplace', {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
-      Authorization: `Bearer ${process.env.ACCESS_TOKEN}`,
+      'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`,
+      'x-api-key': process.env.SKIMAVIS_DAPP_KEY as string,
     },
     body: JSON.stringify({
       query,
@@ -127,7 +128,7 @@ async function estimateGachaFee(): Promise<bigint> {
 async function processGachaResults(reqHash: `0x${string}`, batchNumber: number): Promise<void> {
   return new Promise((resolve) => {
     let isResolved = false
-    
+
     const unwatch = publicClient.watchContractEvent({
       address: CONSTANTS.VRF_ADDRESS,
       abi: vrfAbi,
