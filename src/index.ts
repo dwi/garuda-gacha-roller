@@ -20,12 +20,12 @@ const shopAbi = JSON.parse(readFileSync(new URL('../abis/garudashop.json', impor
 const vrfAbi = JSON.parse(readFileSync(new URL('../abis/vrf.json', import.meta.url), 'utf8'))
 
 // Environment validation
-if (!process.env.PRIVATE_KEY || !process.env.ACCESS_TOKEN || !process.env.SKIMAVIS_DAPP_KEY) throw new Error('Missing required environment variables')
+if (!process.env.PRIVATE_KEY || !process.env.ACCESS_TOKEN || !process.env.SKYMAVIS_DAPP_KEY) throw new Error('Missing required environment variables')
 
 // Blockchain setup
 const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
-const publicClient = createPublicClient({ chain: ronin, transport: http(process.env.RONIN_RPC ?? `https://api-gateway.skymavis.com/rpc?apikey=${process.env.SKIMAVIS_DAPP_KEY}`) })
-const walletClient = createWalletClient({ account, chain: ronin, transport: http(process.env.RONIN_RPC ?? `https://api-gateway.skymavis.com/rpc?apikey=${process.env.SKIMAVIS_DAPP_KEY}`) })
+const publicClient = createPublicClient({ chain: ronin, transport: http(process.env.RONIN_RPC ?? `https://api-gateway.skymavis.com/rpc?apikey=${process.env.SKYMAVIS_DAPP_KEY}`) })
+const walletClient = createWalletClient({ account, chain: ronin, transport: http(process.env.RONIN_RPC ?? `https://api-gateway.skymavis.com/rpc?apikey=${process.env.SKYMAVIS_DAPP_KEY}`) })
 
 const program = new Command()
 
@@ -94,7 +94,7 @@ async function fetchGachaTickets(): Promise<GachaTicket> {
     headers: {
       'content-type': 'application/json',
       'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`,
-      'x-api-key': process.env.SKIMAVIS_DAPP_KEY as string,
+      'x-api-key': process.env.SKYMAVIS_DAPP_KEY as string,
     },
     body: JSON.stringify({
       query,
